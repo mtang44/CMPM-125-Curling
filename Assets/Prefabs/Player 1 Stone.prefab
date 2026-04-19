@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1063100438389528949}
   - component: {fileID: 7678125524230930790}
   - component: {fileID: 6146753344875332340}
+  - component: {fileID: 7585629057218048300}
   - component: {fileID: 2232379067384028725}
   - component: {fileID: 6631722428365975585}
   m_Layer: 0
@@ -95,6 +96,21 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &7585629057218048300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2387939817240537075}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da8ade76cf6152c4eb45e3807e9cc8b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Player
+  player_number: 1
+  score: 0
+  stones_remaining: 4
 --- !u!54 &2232379067384028725
 Rigidbody:
   m_ObjectHideFlags: 0
