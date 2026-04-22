@@ -31,7 +31,7 @@ public class PlayerTurnManager : MonoBehaviour
     public void EndTurn()
     {
         UpdatePlayerScores();
-        if(currentPlayerIndex == 1 && player1.stones_remaining > 0)
+        if(currentPlayerIndex == 1 && player1.stones_remaining > 1) // > 1 since player starts with stone already on field
         {
             player1.stones_remaining--;
             Instantiate(player2_stone, new Vector3(0,1,0), Quaternion.identity);

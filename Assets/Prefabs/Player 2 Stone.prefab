@@ -191,9 +191,11 @@ GameObject:
   - component: {fileID: 1205123492892822014}
   - component: {fileID: 5016645733853994205}
   - component: {fileID: 7570988567281445912}
+  - component: {fileID: 6471521767223708328}
   - component: {fileID: 5439899124115988695}
   - component: {fileID: 563404362867099419}
   - component: {fileID: 5828206289344061028}
+  - component: {fileID: 6716501064343840932}
   m_Layer: 0
   m_Name: Player 2 Stone
   m_TagString: Untagged
@@ -276,6 +278,20 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &6471521767223708328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5755702748703871304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6c69adf67c6441f59de46c4dee781c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StoneController
+  maxForce: 50
+  chargeSpeed: 20
 --- !u!114 &5439899124115988695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -341,6 +357,36 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
+--- !u!114 &6716501064343840932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5755702748703871304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.PlayerInput
+  m_Actions: {fileID: -944628639613478452, guid: 179102eb0d00846839b913c2b43a27a0, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Gameplay
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &5797882266209270075
 GameObject:
   m_ObjectHideFlags: 0
