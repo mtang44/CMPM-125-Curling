@@ -1,5 +1,7 @@
 using TMPro;
+using Unity.VectorGraphics;
 using Unity.VisualScripting;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class PlayerTurnManager : MonoBehaviour
@@ -15,7 +17,7 @@ public class PlayerTurnManager : MonoBehaviour
     private Player player2 = new Player(2);
     private GameObject currentStone;
 
-
+    private SceneManager scene_manager;
 
     private GameObject scoring_target;
 
@@ -64,5 +66,9 @@ public class PlayerTurnManager : MonoBehaviour
         player2.score = scoring_target.GetComponent<TargetScoring>().Calculate_Score(player2.player_number);
         Debug.Log("Player 1 Score: " + player1.score);
         Debug.Log("Player 2 Score: " + player2.score);
+    }
+    public void resetScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
