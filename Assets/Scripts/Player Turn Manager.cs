@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerTurnManager : MonoBehaviour
@@ -8,8 +9,12 @@ public class PlayerTurnManager : MonoBehaviour
 
     public TextMeshProUGUI player1_score_text;
     public TextMeshProUGUI player2_score_text;
+    
+    public Camera main_camera;
     private Player player1 = new Player(1);
     private Player player2 = new Player(2);
+    private GameObject currentStone;
+
 
 
     private GameObject scoring_target;
@@ -19,12 +24,16 @@ public class PlayerTurnManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        currentStone = Instantiate(player1_stone, new Vector3(0,1,0), Quaternion.identity);
         scoring_target = GameObject.Find("Scoring Target");
+        main_camera = Camera.main;
     }
 
     // Update is called once per frame
     void Update()
     {
+        main_camera.transform.position =Vector3.MoveTowards(main_camera.transform.position, currentStone.transform.position + new Vector3(0, 7, 8), Time.deltaTime * 100);
+        
         player1_score_text.text = "Player 1 Score: " + player1.score;
         player2_score_text.text = "Player 2 Score: " + player2.score;
     }
@@ -34,14 +43,14 @@ public class PlayerTurnManager : MonoBehaviour
         if(currentPlayerIndex == 1 && player1.stones_remaining > 1) // > 1 since player starts with stone already on field
         {
             player1.stones_remaining--;
-            Instantiate(player2_stone, new Vector3(0,1,0), Quaternion.identity);
-            
+           
+            currentStone = Instantiate(player2_stone, new Vector3(0,1,0), Quaternion.identity);
             currentPlayerIndex = 2;
         }
         else if(currentPlayerIndex == 2 && player2.stones_remaining > 0)
         {
             player2.stones_remaining--;
-            Instantiate(player1_stone, new Vector3(0,1,0), Quaternion.identity);
+            currentStone = Instantiate(player1_stone, new Vector3(0,1,0), Quaternion.identity);
             currentPlayerIndex = 1;
         }
         else

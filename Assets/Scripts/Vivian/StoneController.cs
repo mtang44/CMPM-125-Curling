@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -13,9 +14,11 @@ public class StoneController : MonoBehaviour
 
     private float currentForce = 0f;
     private bool isCharging = false;
+    [SerializeField] private bool hasBeenThrown = false;
 
     void Start()
     {
+        hasBeenThrown = false;
         rb = GetComponent<Rigidbody>();
         cam = Camera.main;
     }
@@ -29,20 +32,27 @@ public class StoneController : MonoBehaviour
     {
         Debug.Log("CLICK EVENT: " + value.isPressed);
 
-        if (value.isPressed)
+        if (!hasBeenThrown)
         {
-            StartCharging();
-        }
-        else
-        {
-            ThrowStone();
+                
+            if (value.isPressed)
+            {
+                StartCharging();
+            }
+            else
+            {
+                ThrowStone();
+            }
         }
     }
 
     void Update()
     {
-        AimWithMouse();
-        HandleCharging();
+        if(!hasBeenThrown)
+        {
+            AimWithMouse();
+            HandleCharging();
+        }    
     }
 
     void AimWithMouse()
@@ -84,5 +94,7 @@ public class StoneController : MonoBehaviour
 
         currentForce = 0f;
         isCharging = false;
+        hasBeenThrown = true;
     }
+
 }
