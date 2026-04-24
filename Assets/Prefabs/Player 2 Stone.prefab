@@ -291,8 +291,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6c69adf67c6441f59de46c4dee781c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StoneController
-  maxForce: 50.1
-  chargeSpeed: 20
+  maxForce: 110
+  chargeSpeed: 30
   hasBeenThrown: 0
 --- !u!114 &5439899124115988695
 MonoBehaviour:
@@ -340,7 +340,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5755702748703871304}
   serializedVersion: 5
-  m_Mass: 3
+  m_Mass: 2
   m_LinearDamping: 0.5
   m_AngularDamping: 0.5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
