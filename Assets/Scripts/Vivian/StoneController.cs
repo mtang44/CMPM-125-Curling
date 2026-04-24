@@ -43,21 +43,14 @@ public class StoneController : MonoBehaviour
             if (value.isPressed)
             {
                 StartCharging();
+                isCharging = true;
+                chargingUp = true;
             }
             else
             {
+                isCharging = false;
                 ThrowStone();
             }
-            //         if (value.isPressed)
-            //         {
-            //             isCharging = true;
-            //             chargingUp = true;
-            //         }
-            //         else
-            //         {
-            //             isCharging = false;
-            //             ThrowStone();
-            //         }
         }
     }
 
