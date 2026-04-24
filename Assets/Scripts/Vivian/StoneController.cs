@@ -8,9 +8,11 @@ public class StoneController : MonoBehaviour
 
     private Vector2 mousePosition;
 
+    private bool chargingUp = true; 
+
     private LineRenderer Ir;
 
-    public float maxForce = 100f;
+    public float maxForce = 50f;
     public float chargeSpeed = 30f;
 
     private float currentForce = 0f;
@@ -33,6 +35,7 @@ public class StoneController : MonoBehaviour
         if (value.isPressed)
         {
             isCharging = true;
+            chargingUp = true;
         }
         else
         {
@@ -77,8 +80,26 @@ public class StoneController : MonoBehaviour
     {
         if (isCharging)
         {
-            currentForce += chargeSpeed * Time.deltaTime;
-            currentForce = Mathf.Clamp(currentForce, 0, maxForce);
+            if (chargingUp)
+            {
+                currentForce += chargeSpeed * Time.deltaTime;
+            
+                if (currentForce >= maxForce)
+                {
+                    currentForce = maxForce;
+                    chargingUp = false;
+                }
+            }
+            else
+            {
+                currentForce -= chargeSpeed * Time.deltaTime;
+
+                if (currentForce <= 0f)
+                {
+                    currentForce = 0f;
+                    chargingUp = true;
+                }
+            }
         }
     }
 
