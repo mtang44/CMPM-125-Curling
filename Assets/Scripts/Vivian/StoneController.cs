@@ -18,10 +18,14 @@ public class StoneController : MonoBehaviour
 
     private float currentForce = 0f;
     private bool isCharging = false;
+    private PlayerTurnManager turnManager;
     [SerializeField] private bool hasBeenThrown = false;
+     private bool hasBeenScored = false;
+    private bool hasStartedMoving = false;
 
     void Start()
     {
+        turnManager = GameObject.Find("Game Manager").gameObject.GetComponent<PlayerTurnManager>();
         hasBeenThrown = false;
         rb = GetComponent<Rigidbody>();
         Ir = GetComponent<LineRenderer>();
@@ -57,13 +61,27 @@ public class StoneController : MonoBehaviour
     void Update()
     {
 
-        if(!hasBeenThrown)
+        if(!hasBeenThrown )
         {
             AimWithMouse();
             HandleCharging();
             UpdateAimLine();
             Debug.Log("THROW FORCE: " + currentForce);
         }    
+        else 
+        {
+            if(rb.linearVelocity.magnitude > 0.1f)
+            {
+                hasStartedMoving = true;
+            }
+            else if(hasStartedMoving && !hasBeenScored && rb.linearVelocity.magnitude < 0.1f)
+            {
+                Destroy(Ir);
+                turnManager.EndTurn();
+                hasBeenScored = true;
+            }
+            
+        }
     }
 
     void AimWithMouse()
@@ -125,6 +143,8 @@ public class StoneController : MonoBehaviour
         currentForce = 0f;
         isCharging = false;
         hasBeenThrown = true;
+        
+        
     }
 
     void UpdateAimLine()

@@ -10,9 +10,11 @@ public class PlayerTurnManager : MonoBehaviour
     public GameObject player1_stone;
     public GameObject player2_stone;
     public GameObject ScoreBoard;
+    public GameObject WinnerText;
 
     public TextMeshProUGUI player1_score_text;
     public TextMeshProUGUI player2_score_text;
+    
     
     public Camera main_camera;
     private Player player1 = new Player(1);
@@ -47,11 +49,11 @@ public class PlayerTurnManager : MonoBehaviour
     public void EndTurn()
     {
         UpdatePlayerScores();
-        if(currentPlayerIndex == 1 && player1.stones_remaining > 1) // > 1 since player starts with stone already on field
+        if(currentPlayerIndex == 1 && player1.stones_remaining > 1 ) // > 1 since player starts with stone already on field
         {
             player1.stones_remaining--;
             cameraOffset = new Vector3(0,7,8);
-            CameraTarget = Instantiate(player2_stone, new Vector3(0,1,0), Quaternion.identity);
+            CameraTarget = Instantiate(player2_stone, new Vector3(0,.2f,0), Quaternion.identity);
             
             currentPlayerIndex = 2;
         }
@@ -59,14 +61,30 @@ public class PlayerTurnManager : MonoBehaviour
         {
             player2.stones_remaining--;
             cameraOffset = new Vector3(0,7,8);
-            CameraTarget = Instantiate(player1_stone, new Vector3(0,1,0), Quaternion.identity);
+            CameraTarget = Instantiate(player1_stone, new Vector3(0,.2f,0), Quaternion.identity);
             
         
             currentPlayerIndex = 1;
         }
         else
         {
+            WinnerText.SetActive(true);
             // end of game logic here 
+            if(player1.score > player2.score)
+            {
+                WinnerText.GetComponentInChildren<TextMeshProUGUI>().text = "Player 1 Wins!";
+                WinnerText.GetComponentInChildren<TextMeshProUGUI>().color = Color.red;
+            }
+            else if (player2.score > player1.score)
+            {
+                WinnerText.GetComponentInChildren<TextMeshProUGUI>().text = "Player 2 Wins!";
+                WinnerText.GetComponentInChildren<TextMeshProUGUI>().color = Color.blue;
+            }
+            else
+            {
+                WinnerText.GetComponentInChildren<TextMeshProUGUI>().text = "Tie Game!";
+                WinnerText.GetComponentInChildren<TextMeshProUGUI>().color = Color.grey;
+            }
             cameraOffset = new Vector3(5,10,30);
             CameraTarget = ScoreBoard;
         }
