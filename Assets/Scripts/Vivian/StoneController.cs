@@ -9,8 +9,12 @@ public class StoneController : MonoBehaviour
 
     private Vector2 mousePosition;
 
+    private bool chargingUp = true; 
+
+    private LineRenderer Ir;
+
     public float maxForce = 50f;
-    public float chargeSpeed = 20f;
+    public float chargeSpeed = 30f;
 
     private float currentForce = 0f;
     private bool isCharging = false;
@@ -20,6 +24,7 @@ public class StoneController : MonoBehaviour
     {
         hasBeenThrown = false;
         rb = GetComponent<Rigidbody>();
+        Ir = GetComponent<LineRenderer>();
         cam = Camera.main;
     }
 
@@ -43,15 +48,27 @@ public class StoneController : MonoBehaviour
             {
                 ThrowStone();
             }
-        }
+//         if (value.isPressed)
+//         {
+//             isCharging = true;
+//             chargingUp = true;
+//         }
+//         else
+//         {
+//             isCharging = false;
+//             ThrowStone();
+//         }
     }
 
     void Update()
     {
+
         if(!hasBeenThrown)
         {
             AimWithMouse();
             HandleCharging();
+            UpdateAimLine();
+            Debug.Log("THROW FORCE: " + currentForce);
         }    
     }
 
@@ -83,13 +100,32 @@ public class StoneController : MonoBehaviour
     {
         if (isCharging)
         {
-            currentForce += chargeSpeed * Time.deltaTime;
-            currentForce = Mathf.Clamp(currentForce, 0, maxForce);
+            if (chargingUp)
+            {
+                currentForce += chargeSpeed * Time.deltaTime;
+            
+                if (currentForce >= maxForce)
+                {
+                    currentForce = maxForce;
+                    chargingUp = false;
+                }
+            }
+            else
+            {
+                currentForce -= chargeSpeed * Time.deltaTime;
+
+                if (currentForce <= 0f)
+                {
+                    currentForce = 0f;
+                    chargingUp = true;
+                }
+            }
         }
     }
 
     void ThrowStone()
     {
+        Debug.Log("THROW FORCE: " + currentForce);
         rb.AddForce(transform.forward * currentForce, ForceMode.Impulse);
 
         currentForce = 0f;
@@ -97,4 +133,14 @@ public class StoneController : MonoBehaviour
         hasBeenThrown = true;
     }
 
+    void UpdateAimLine()
+    {
+        Vector3 start = transform.position;
+
+        float lineLength = Mathf.Lerp(1f, 4f, currentForce / maxForce);
+        Vector3 end = transform.position + transform.forward * lineLength;
+
+        Ir.SetPosition(0, start);
+        Ir.SetPosition(1, end);
+    }
 }
