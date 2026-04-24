@@ -3,6 +3,7 @@ using Unity.VectorGraphics;
 using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class PlayerTurnManager : MonoBehaviour
 {
@@ -18,9 +19,11 @@ public class PlayerTurnManager : MonoBehaviour
     private Player player2 = new Player(2);
     private GameObject CameraTarget;
 
-    private SceneManager scene_manager;
-
     private GameObject scoring_target;
+    
+    private Vector3 cameraOffset;
+   
+
     
 
     
@@ -30,14 +33,14 @@ public class PlayerTurnManager : MonoBehaviour
     {
         CameraTarget = Instantiate(player1_stone, new Vector3(0,1,0), Quaternion.identity);
         scoring_target = GameObject.Find("Scoring Target");
+        cameraOffset = new Vector3(0,7,8);
         main_camera = Camera.main;
     }
 
     // Update is called once per frame
     void Update()
     {
-        main_camera.transform.position = Vector3.MoveTowards(main_camera.transform.position, CameraTarget.transform.position + new Vector3(0, 7, 8), Time.deltaTime * 100);
-        
+        main_camera.transform.position = Vector3.MoveTowards(main_camera.transform.position, CameraTarget.transform.position + cameraOffset, Time.deltaTime * 100);
         player1_score_text.text = "" + player1.score;
         player2_score_text.text = "" + player2.score;
     }
@@ -47,19 +50,24 @@ public class PlayerTurnManager : MonoBehaviour
         if(currentPlayerIndex == 1 && player1.stones_remaining > 1) // > 1 since player starts with stone already on field
         {
             player1.stones_remaining--;
-           
+            cameraOffset = new Vector3(0,7,8);
             CameraTarget = Instantiate(player2_stone, new Vector3(0,1,0), Quaternion.identity);
+            
             currentPlayerIndex = 2;
         }
         else if(currentPlayerIndex == 2 && player2.stones_remaining > 0)
         {
             player2.stones_remaining--;
+            cameraOffset = new Vector3(0,7,8);
             CameraTarget = Instantiate(player1_stone, new Vector3(0,1,0), Quaternion.identity);
+            
+        
             currentPlayerIndex = 1;
         }
         else
         {
             // end of game logic here 
+            cameraOffset = new Vector3(5,10,30);
             CameraTarget = ScoreBoard;
         }
     }
