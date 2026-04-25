@@ -11,6 +11,8 @@ public class PlayerTurnManager : MonoBehaviour
     public GameObject player2_stone;
     public GameObject ScoreBoard;
     public GameObject WinnerText;
+    public GameObject RightArrow;
+    public GameObject LeftArrow;
 
     public TextMeshProUGUI player1_score_text;
     public TextMeshProUGUI player2_score_text;
@@ -33,6 +35,8 @@ public class PlayerTurnManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        RightArrow = GameObject.Find("Curve Right");
+        LeftArrow = GameObject.Find("Curve Left");
         CameraTarget = Instantiate(player1_stone, new Vector3(0,1,0), Quaternion.identity);
         scoring_target = GameObject.Find("Scoring Target");
         cameraOffset = new Vector3(0,7,8);
@@ -68,6 +72,8 @@ public class PlayerTurnManager : MonoBehaviour
         }
         else
         {
+            RightArrow.SetActive(false);
+            LeftArrow.SetActive(false);
             WinnerText.SetActive(true);
             // end of game logic here 
             if(player1.score > player2.score)

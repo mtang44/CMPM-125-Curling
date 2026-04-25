@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 
 public class StoneController : MonoBehaviour
 {
+   
     private Rigidbody rb;
     private Camera cam;
 
@@ -26,8 +27,8 @@ public class StoneController : MonoBehaviour
     // CURL SYSTEM
     private bool isCurling = false;
     private Vector2 lastMousePos;
-    public float curlStrength = 5f;
-    public float maxCurlForce = 2f;
+    public float curlStrength = 2f;
+    public float maxCurlForce = .5f;
 
     void Start()
     {
@@ -45,8 +46,6 @@ public class StoneController : MonoBehaviour
 
     void OnClick(InputValue value)
     {
-        Debug.Log("CLICK EVENT: " + value.isPressed);
-
         // BEFORE THROW → charging
         if (!hasBeenThrown)
         {
@@ -83,15 +82,20 @@ public class StoneController : MonoBehaviour
         if(!hasBeenThrown )
         {
             AimWithMouse();
+            
             HandleCharging();
             UpdateAimLine();
+             
             // Debug.Log("THROW FORCE: " + currentForce);
         }    
         else 
         {
-            HandleCurl();
-
-            if(rb.linearVelocity.magnitude > 0.1f)
+          
+            if(rb.linearVelocity.magnitude > 3.5f)
+            {
+                HandleCurl();
+            }
+            if(rb.linearVelocity.magnitude > 0.5f)
             {
                 hasStartedMoving = true;
             }
@@ -192,7 +196,7 @@ public class StoneController : MonoBehaviour
 
         // Curl increases as velocity decreases
         float speed = rb.linearVelocity.magnitude;
-        float speedFactor = Mathf.Clamp01(1f - speed / 10f); 
+        float speedFactor = Mathf.Clamp01(1f - speed / 20f); 
         // tweak "10f" later based on feel
 
         float curlForce = deltaX * curlStrength * speedFactor;
@@ -202,6 +206,5 @@ public class StoneController : MonoBehaviour
         rb.AddForce(sideDirection * curlForce, ForceMode.Force);
 
         lastMousePos = currentMouse;
-        Debug.Log("CurlForce: " + curlForce);
     }
 }
