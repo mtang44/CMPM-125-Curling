@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 
 public class StoneController : MonoBehaviour
 {
+   
     private Rigidbody rb;
     private Camera cam;
 
@@ -23,6 +24,12 @@ public class StoneController : MonoBehaviour
      private bool hasBeenScored = false;
     private bool hasStartedMoving = false;
 
+    // CURL SYSTEM
+    private bool isCurling = false;
+    private Vector2 lastMousePos;
+    public float curlStrength = 2f;
+    public float maxCurlForce = .5f;
+
     void Start()
     {
         turnManager = GameObject.Find("Game Manager").gameObject.GetComponent<PlayerTurnManager>();
@@ -39,11 +46,9 @@ public class StoneController : MonoBehaviour
 
     void OnClick(InputValue value)
     {
-        Debug.Log("CLICK EVENT: " + value.isPressed);
-
+        // BEFORE THROW → charging
         if (!hasBeenThrown)
         {
-                
             if (value.isPressed)
             {
                 StartCharging();
@@ -56,6 +61,19 @@ public class StoneController : MonoBehaviour
                 ThrowStone();
             }
         }
+        // AFTER THROW -> curling
+        else
+        {
+            if (value.isPressed)
+            {
+                isCurling = true;
+                lastMousePos = mousePosition;
+            }
+            else
+            {
+                isCurling = false;
+            }
+        }
     }
 
     void Update()
@@ -64,13 +82,20 @@ public class StoneController : MonoBehaviour
         if(!hasBeenThrown )
         {
             AimWithMouse();
+            
             HandleCharging();
             UpdateAimLine();
-            Debug.Log("THROW FORCE: " + currentForce);
+             
+            // Debug.Log("THROW FORCE: " + currentForce);
         }    
         else 
         {
-            if(rb.linearVelocity.magnitude > 0.1f)
+          
+            if(rb.linearVelocity.magnitude > 3.5f)
+            {
+                HandleCurl();
+            }
+            if(rb.linearVelocity.magnitude > 0.5f)
             {
                 hasStartedMoving = true;
             }
@@ -137,7 +162,7 @@ public class StoneController : MonoBehaviour
 
     void ThrowStone()
     {
-        Debug.Log("THROW FORCE: " + currentForce);
+        // Debug.Log("THROW FORCE: " + currentForce);
         rb.AddForce(transform.forward * currentForce, ForceMode.Impulse);
 
         currentForce = 0f;
@@ -156,5 +181,30 @@ public class StoneController : MonoBehaviour
 
         Ir.SetPosition(0, start);
         Ir.SetPosition(1, end);
+    }
+
+    void HandleCurl()
+    {
+        if (!isCurling) return;
+
+        // Calculate mouse movement
+        Vector2 currentMouse = mousePosition;
+        float deltaX = currentMouse.x - lastMousePos.x;
+
+        // Get sideways direction relative to stone
+        Vector3 sideDirection = transform.right;
+
+        // Curl increases as velocity decreases
+        float speed = rb.linearVelocity.magnitude;
+        float speedFactor = Mathf.Clamp01(1f - speed / 20f); 
+        // tweak "10f" later based on feel
+
+        float curlForce = deltaX * curlStrength * speedFactor;
+
+        curlForce = Mathf.Clamp(curlForce, -maxCurlForce, maxCurlForce);
+
+        rb.AddForce(sideDirection * curlForce, ForceMode.Force);
+
+        lastMousePos = currentMouse;
     }
 }

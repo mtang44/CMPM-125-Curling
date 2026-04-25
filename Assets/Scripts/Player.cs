@@ -8,8 +8,8 @@ public class Player : MonoBehaviour
 
     public Player(int current_player_number)
     {
-        this.player_number =current_player_number;
-        this.score = 0;
-        this.stones_remaining = 4;
+        player_number = current_player_number;
+        score = 0;
+        stones_remaining = 4;
     }
 }
