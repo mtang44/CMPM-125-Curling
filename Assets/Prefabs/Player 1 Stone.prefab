@@ -114,6 +114,8 @@ MonoBehaviour:
   maxForce: 110
   chargeSpeed: 30
   hasBeenThrown: 0
+  curlStrength: 15
+  maxCurlForce: 5
 --- !u!114 &7585629057218048300
 MonoBehaviour:
   m_ObjectHideFlags: 0
